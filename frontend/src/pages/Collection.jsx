@@ -7,7 +7,7 @@ import { assets } from '../assets/assets';
 
 
 function Collection() {
-  const {products} =useContext(ShopContext);
+  const {products , search , showSearch} =useContext(ShopContext);
   const [showFilter, setShowFilter] = useState(false);
   const [filterProducts, setFilterProducts] = useState([]);
   const [category, setCategory]= useState([]);
@@ -34,6 +34,9 @@ function Collection() {
 
   const applyFilter = () =>{
     let productsCopy=products.slice();
+    if(search!==''){
+      productsCopy=productsCopy.filter(item=>item.name.toLowerCase().includes(search.trim().toLowerCase()));
+    }
     if(category.length>0){
       productsCopy=productsCopy.filter(item=>category.includes(item.category));
     }
@@ -66,7 +69,7 @@ function Collection() {
 
   useEffect(()=>{
     applyFilter();
-  },[category,subCategory])
+  },[category,subCategory,search])
 
   useEffect(()=>{
     sortProducts();

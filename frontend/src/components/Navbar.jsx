@@ -1,18 +1,37 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import {assets} from '../assets/assets'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import { ShopContext } from '../context/shopcontext';
 
 function Navbar() {
 
     const [visible,setVisible]=useState(false);
+    const {setShowSearch}=useContext(ShopContext);
+    const location=useLocation();
+    const navigate=useNavigate();
+
+    const searchClicked=()=>{
+        if(location.pathname==='/collection'){
+            setShowSearch(true);
+        }
+        else{
+            navigate('/collection');
+            setShowSearch(true);
+        }
+    }
+
+    const resetsearch=()=>{
+        setShowSearch(false);
+    }
+
 
   return (
     <div className='flex items-center justify-between py-5 font-medium'>
         <Link to="/"><img src={assets.logo2} className='' alt=''></img></Link>
 
         <ul className='hidden sm:flex gap-5 text-sm text-gray-700'>
-            <NavLink to="/" className={({isActive}) =>`flex flex-col items-center gap-1
+            <NavLink onClick={resetsearch} to="/" className={({isActive}) =>`flex flex-col items-center gap-1
                                                              ${isActive ? "text-orange-700" : "text-gray-700"}
                                                               hover:bg-gray-50 
                                                               lg:hover:bg-transparent lg:border-0 
@@ -20,7 +39,7 @@ function Navbar() {
                 HOME
             </NavLink>
 
-            <NavLink to="/collection" className={({isActive}) =>`flex flex-col items-center gap-1
+        <NavLink onClick={()=>(setShowSearch(true))} to="/collection" className={({isActive}) =>`flex flex-col items-center gap-1
                                                              ${isActive ? "text-orange-700" : "text-gray-700"}
                                                               hover:bg-gray-50 
                                                               lg:hover:bg-transparent lg:border-0 
@@ -28,7 +47,7 @@ function Navbar() {
                 COLLECTION
             </NavLink>
 
-            <NavLink to="/about" className={({isActive}) =>`flex flex-col items-center gap-1
+            <NavLink onClick={resetsearch} to="/about" className={({isActive}) =>`flex flex-col items-center gap-1
                                                              ${isActive ? "text-orange-700" : "text-gray-700"}
                                                               hover:bg-gray-50 
                                                               lg:hover:bg-transparent lg:border-0 
@@ -36,7 +55,7 @@ function Navbar() {
                 ABOUT
             </NavLink>
 
-            <NavLink to="/contact" className={({isActive}) =>`flex flex-col items-center gap-1
+            <NavLink onClick={resetsearch} to="/contact" className={({isActive}) =>`flex flex-col items-center gap-1
                                                              ${isActive ? "text-orange-700" : "text-gray-700"}
                                                               hover:bg-gray-50 
                                                               lg:hover:bg-transparent lg:border-0 
@@ -49,7 +68,8 @@ function Navbar() {
 
 
         <div className='flex items-center gap-6'>
-            <img src={assets.search_icon} className='w-5 cursor-pointer' about=''></img>
+            {/* <img onClick={()=>setShowSearch(true)} src={assets.search_icon} className={`w-5 cursor-pointer ${location.pathname=== '/collection' ? '' : 'hidden'}`} about=''></img> */}
+            <img onClick={searchClicked} src={assets.search_icon} className={`w-5 cursor-pointer`} about=''></img>
 
             <div className='group relative'>
                 <img className='w-5 cursor-pointer' src={assets.profile_icon} alt=""></img>
