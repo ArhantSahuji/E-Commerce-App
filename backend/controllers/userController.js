@@ -30,7 +30,7 @@ const loginUser = async (req,res)=>{
             res.json({success:true , token})
         }
         else{
-            res.json({success: false , message:"hiii Invalid credentials"})
+            res.json({success: false , message:"Invalid credentials"})
         }
 
     } catch (error) {
